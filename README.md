@@ -190,12 +190,9 @@ Once your work is complete:
 4. Create a Pull Request (PR)
 
 Include:
-
-##### Summary - What was changed?
-
-##### Testing - How was it tested?
-
-##### Notes - Anything reviewers should know.
+* Summary - What was changed?
+* Testing - How was it tested?
+* Notes - Anything reviewers should know.
 
 Example:
 
