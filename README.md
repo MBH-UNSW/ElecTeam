@@ -31,8 +31,16 @@ git commit -m "Describe changes"
 
 ## Upload Changes
 
+### First Push of a New Branch
+
 ```bash
-git push origin feature/my-feature
+git push -u origin feature/my-feature
+```
+
+### Future Pushes
+
+```bash
+git push
 ```
 
 ## Create Pull Request
@@ -125,8 +133,16 @@ Changes
 
 Push your branch to GitHub.
 
+### First Push
+
 ```bash
-git push origin feature/can-driver
+git push -u origin feature/can-driver
+```
+
+### Future Pushes
+
+```bash
+git push
 ```
 
 This uploads your work without affecting the `main` branch.
@@ -200,5 +216,3 @@ Once the Pull Request has been approved:
 3. Delete the branch after merging
 
 Only reviewed code should be merged into `main`.
-
----
