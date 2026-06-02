@@ -14,6 +14,17 @@ All changes must follow the workflow below.
 
 # Quick Reference
 
+## Folder Format
+
+Under your subteam folder, create a folder for each feature you implement. Place the corresponding main.c and .ioc files inside that folder.
+
+Example:
+
+Drivelines/
+└── RandomDataGeneration/
+    ├── main.c
+    └── RandomDataGeneration.ioc
+
 ## Start New Work
 
 ```bash
