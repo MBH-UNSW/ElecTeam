@@ -16,16 +16,34 @@ All changes must follow the workflow below.
 
 ## Folder Format
 
-Under your subteam folder, create a folder for each feature you implement. Place the corresponding main.c and .ioc files inside that folder.
+Under your subteam folder, create a folder for each feature you implement. Place the corresponding main.c and .ioc files inside that folder. Also add a README.md file which outlines what another team member has to do in order to have the code run appropriately (an outline of what you did on CubeMX to get to that stage)
 
-Example:
+### Example:
 
 ```bash
 Drivelines/
 └── RandomDataGeneration/
     ├── main.c
     └── RandomDataGeneration.ioc
+    └── README.md
 ```
+
+### README Requirements
+
+Each feature folder must contain a README.md file describing:
+
+* The purpose and functionality of the feature.
+* Any required hardware connections (e.g. LEDs, sensors, external components).
+* The STM32 board used.
+* The CubeMX configuration steps required to recreate the project, including:
+* Clock configuration changes.
+* Peripheral configurations (GPIO, ADC, UART, Timers, etc.).
+* Pin assignments.
+* Middleware or additional settings enabled.
+* Any important code modifications made after code generation.
+* Instructions for building, flashing, and testing the feature.
+
+The goal is to provide enough information for another team member to recreate and run the project without needing additional guidance.
 
 ## Start New Work
 
