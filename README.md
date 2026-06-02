@@ -16,7 +16,7 @@ All changes must follow the workflow below.
 
 ## Folder Format
 
-Under your subteam folder, create a folder for each feature you implement. Place the corresponding main.c and .ioc files inside that folder. Also add a README.md file which outlines what another team member has to do in order to have the code run appropriately (an outline of what you did on CubeMX to get to that stage)
+Under your subteam folder, create a folder for each feature you implement. Place the corresponding `main.c` and `.ioc` files inside that folder. Also add a `README.md` file which outlines what another team member has to do in order to have the code run appropriately (an outline of what you did on CubeMX to get to that stage).
 
 ### Example:
 
@@ -30,7 +30,7 @@ Drivelines/
 
 ### README Requirements
 
-Each feature folder must contain a README.md file describing:
+Each feature folder must contain a `README.md` file describing:
 
 * The purpose and functionality of the feature.
 * Any required hardware connections (e.g. LEDs, sensors, external components).
@@ -191,14 +191,11 @@ Once your work is complete:
 
 Include:
 
-### Summary
-What was changed?
+##### Summary - What was changed?
 
-### Testing
-How was it tested?
+##### Testing - How was it tested?
 
-### Notes
-Anything reviewers should know.
+##### Notes - Anything reviewers should know.
 
 Example:
 
