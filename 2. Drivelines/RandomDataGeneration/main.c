@@ -104,16 +104,20 @@ void USART_Send_Bit_Sequence(int i)
 {
   char buffer[20];
 
-  int len = snprintf(buffer,
-                     sizeof(buffer),
-                     ">index:%d,bit:%d\r\n",
-                     i,
-                     random_number_bits[i]);
+  int len = snprintf(
+    buffer,
+    sizeof(buffer),
+    ">index:%d,bit:%d\r\n",
+    i,
+    random_number_bits[i]
+  );
 
-  HAL_UART_Transmit(&huart2,
-                    (uint8_t*)buffer,
-                    len,
-                    100);
+  HAL_UART_Transmit(
+    &huart2,
+    (uint8_t*)buffer,
+    len,
+    100
+  );
 }
 
 
@@ -126,16 +130,20 @@ void Sequence_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t DELAY)
     if (random_number_bits[i] == BIT_HIGH)
     {
       /* on bank x, set pin to output logic HIGH for bit value 1 */
-      HAL_GPIO_WritePin(GPIOx,
-                        GPIO_Pin,
-                        GPIO_PIN_SET);
+      HAL_GPIO_WritePin(
+        GPIOx,
+        GPIO_Pin,
+        GPIO_PIN_SET
+      );
     }
     else
     {
       /* on bank x, set pin to output logic LOW for bit value 0 */
-      HAL_GPIO_WritePin(GPIOx,
-                        GPIO_Pin,
-                        GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(
+        GPIOx,
+        GPIO_Pin,
+        GPIO_PIN_RESET
+      );
     }
 
     USART_Send_Bit_Sequence(i);
@@ -143,9 +151,11 @@ void Sequence_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t DELAY)
     HAL_Delay(DELAY);
   }
 
-  HAL_GPIO_WritePin(GPIOx,
-                    GPIO_Pin,
-                    GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(
+    GPIOx,
+    GPIO_Pin,
+    GPIO_PIN_RESET
+  );
 }
 
 /* USER CODE END 0 */
