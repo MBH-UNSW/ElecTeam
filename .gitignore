@@ -1,0 +1,20 @@
+# STM32CubeIDE build folders
+Debug/
+Release/
+
+# Build artifacts
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+*.map
+
+# CubeIDE settings
+.settings/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
