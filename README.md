@@ -20,10 +20,12 @@ Under your subteam folder, create a folder for each feature you implement. Place
 
 Example:
 
+```bash
 Drivelines/
 └── RandomDataGeneration/
     ├── main.c
     └── RandomDataGeneration.ioc
+```
 
 ## Start New Work
 
