@@ -12,6 +12,37 @@ All changes must follow the workflow below.
 
 ---
 
+# Quick Reference
+
+## Start New Work
+
+```bash
+git checkout main
+git pull
+git checkout -b feature/my-feature
+```
+
+## Save Changes
+
+```bash
+git add .
+git commit -m "Describe changes"
+```
+
+## Upload Changes
+
+```bash
+git push origin feature/my-feature
+```
+
+## Create Pull Request
+
+GitHub → Compare & Pull Request
+
+Wait for review and approval before merging.
+
+---
+
 # Step 1: Update Your Local Repository
 
 Before starting any work, make sure your local copy is up to date.
@@ -171,106 +202,3 @@ Once the Pull Request has been approved:
 Only reviewed code should be merged into `main`.
 
 ---
-
-# Team Rules
-
-## Always
-
-✅ Create a branch before starting work
-
-✅ Keep your branch focused on one task
-
-✅ Write meaningful commit messages
-
-✅ Test your code before submitting
-
-✅ Request a review before merging
-
-✅ Delete branches after merging
-
----
-
-## Never
-
-❌ Push directly to `main`
-
-❌ Merge your own code without review
-
-❌ Commit broken code
-
-❌ Force push to `main`
-
-❌ Upload unnecessary build files
-
----
-
-# Quick Reference
-
-## Start New Work
-
-```bash
-git checkout main
-git pull
-git checkout -b feature/my-feature
-```
-
-## Save Changes
-
-```bash
-git add .
-git commit -m "Describe changes"
-```
-
-## Upload Changes
-
-```bash
-git push origin feature/my-feature
-```
-
-## Create Pull Request
-
-GitHub → Compare & Pull Request
-
-Wait for review and approval before merging.
-
----
-
-# Repository Structure
-
-```text
-Firmware/
-├── Main_Controller/
-├── Sensor_Module/
-└── Test_Code/
-
-Docs/
-├── Hardware/
-├── Schematics/
-└── Requirements/
-
-PCB/
-
-Resources/
-```
-
----
-
-# Branch Protection
-
-The `main` branch is protected.
-
-Direct pushes to `main` are disabled.
-
-All changes must go through:
-
-1. Branch
-2. Pull Request
-3. Review
-4. Approval
-5. Merge
-
----
-
-# Questions?
-
-If you are unsure about GitHub, branches, commits, or pull requests, ask a team member before merging code.
