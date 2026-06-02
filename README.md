@@ -36,10 +36,10 @@ Each feature folder must contain a README.md file describing:
 * Any required hardware connections (e.g. LEDs, sensors, external components).
 * The STM32 board used.
 * The CubeMX configuration steps required to recreate the project, including:
-* Clock configuration changes.
-* Peripheral configurations (GPIO, ADC, UART, Timers, etc.).
-* Pin assignments.
-* Middleware or additional settings enabled.
+    * Clock configuration changes.
+    * Peripheral configurations (GPIO, ADC, UART, Timers, etc.).
+    * Pin assignments.
+    * Middleware or additional settings enabled.
 * Any important code modifications made after code generation.
 * Instructions for building, flashing, and testing the feature.
 
