@@ -30,6 +30,8 @@ Drivelines/
 
 ### README Requirements
 
+Example provided in `Drivelines/RandomDataGeneration/README.md` (you can copy this alongside your `.ioc` and `main.c` files to ChatGPT or Claude and get a similar `README.md`).
+
 Each feature folder must contain a `README.md` file describing:
 
 * The purpose and functionality of the feature.
