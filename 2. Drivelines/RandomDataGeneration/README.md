@@ -45,3 +45,7 @@ A new random sequence is generated continuously in the main loop.
 1. Build and flash the project to the NUCLEO-G431KB.
 2. Open a serial terminal at 115200 baud.
 3. Observe random bit values in the terminal and corresponding HIGH/LOW output on PB4.
+
+## Pinout View + Clock Configruation Screenshots
+<img width="774" height="554" alt="image" src="https://github.com/user-attachments/assets/a6fa512a-84d4-4643-a519-b9ab38a52218" />
+<img width="1382" height="719" alt="image" src="https://github.com/user-attachments/assets/5de8fbd7-bcea-4adf-b279-d198f98ca6f9" />
