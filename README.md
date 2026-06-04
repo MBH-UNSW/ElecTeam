@@ -34,6 +34,8 @@ Example provided in `Drivelines/RandomDataGeneration/README.md` (you can copy th
 
 Each feature folder must contain a `README.md` file describing:
 
+* Screenshot of your Pinout View
+* Screenshot of your Clock Configuration
 * The purpose and functionality of the feature.
 * Any required hardware connections (e.g. LEDs, sensors, external components).
 * The STM32 board used.
