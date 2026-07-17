@@ -1,0 +1,124 @@
+{
+    "metadata": {
+        "device_id": "UBH_TAH001",
+        "patient_id": "P1001",
+        "timestamp_sec": 1784293920,
+        "firmware_version": "1.2.4",
+        "hardware_revision": "RevA",
+        "packet_id": 18329
+    },
+
+    "measurements": {
+        "left_flow_lpm": 5.24,
+        "right_flow_lpm": 4.88,
+
+        "left_inlet_pressure_mmHg": 95,
+        "right_inlet_pressure_mmHg": 96,
+
+        "left_upstream_pressure_mmHg": 97,
+        "left_downstream_pressure_mmHg": 90,
+        "right_upstream_pressure_mmHg": 96,
+        "right_downstream_pressure_mmHg": 89,
+
+        "pump_rpm": 2850,
+
+        "tah_temperature_c": 37.2,
+        "controller_temperature_c": 42.6,
+        "coil_internal_temperature_c": 39.5,
+        "coil_external_temperature_c": 35.1,
+
+        "battery_voltage_v": 25.1,
+        "battery_current_a": 2.35,
+        "battery_soc_percent": 91,
+        "battery_temperature_c": 36.9,
+
+        "internal_battery_voltage_v": 12.3,
+        "internal_battery_current_a": 0.42,
+        "internal_battery_soc_percent": 91,
+        "internal_battery_temperature_c": 31.8,
+        
+        "wireless_power_efficiency_percent": 82.4,
+        "received_power_w": 18.3,
+        "transmitted_power_w": 22.2
+    },
+
+    "states": {
+        "system_state": "running",
+        "maglev_state": "levitated",
+        "pump_state": "running",
+        
+        "external_battery_in_use": true,
+        "interal_battery_in_use": false,
+        "internal_battery_charging": true,
+
+        "wireless_power_active": true,
+        "driveline_connected": false
+    },
+
+    "alerts": {
+        "internal_battery_low": false,
+        "external_battery_low": false,
+        "external_battery_critical": false,
+
+        "pressure_sensor_fault": false,
+        "flow_sensor_fault": false,
+        "temperature_sensor_fault": false,
+        
+        "maglev_fault": false,
+        "motor_fault": false,
+        "controller_fault": false,
+        "critical_temperature": false,
+        
+        "communication_fault": false,
+        "wireless_power_fault": false,
+        "driveline_disconnected": false,
+        "low_transfer_efficiency": false
+    },
+
+    "power": {
+        "external_battery": {
+            "soc_percent": 91,
+            "temperature_c": 36.9,
+            "voltage_v": 25.1,
+            "current_a": 2.4
+        },
+
+        "internal_battery": {
+            "soc_percent": 94,
+            "temperature_c": 31.4,
+            "voltage_v": 12.4,
+            "current_a": 0.3
+        },
+
+        "wireless_power": {
+            "efficiency_percent": 83.5,
+            "transmit_power_w": 22.4,
+            "receive_power_w": 18.8
+        }
+    },
+
+    "clinician": {
+        "estimated_cardiac_output_lpm": 10.1,
+        "pump_balance_percent": 51.2,
+        "estimated_map_mmHg": 94,
+
+        "estimated_power_consumption_w": 18.2,
+        "operating_hours": 1482,
+        "battery_runtime_remaining_min": 215
+    },
+
+    "events": [
+        {
+            "time": 1784293001,
+            "event": "battery_changed"
+        },
+        {
+            "time": 1784293304,
+            "event": "wireless_power_connected"
+        },
+        {
+            "time": 1784293881,
+            "event": "low_efficiency_warning"
+        }
+    ]
+}
