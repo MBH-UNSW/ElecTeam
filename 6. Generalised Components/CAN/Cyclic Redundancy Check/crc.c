@@ -76,10 +76,10 @@ int bit_length(uint64_t data)
     return length;
 }
 
-int main()
+int main(void)
 {
     uint64_t data = 0b101011010111010111010111100011;
-    uint16_t crc = generator_CRC15(data, 30);
+    uint16_t crc = generator_CRC15(data, bit_length(data));
 
     printf("CRC: %u\n", crc);
 
