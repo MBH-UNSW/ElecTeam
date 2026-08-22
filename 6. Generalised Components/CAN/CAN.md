@@ -26,7 +26,7 @@
 
         - A higher-degrees CRC polynomial provides stronger error detection at the cost of additional transmitted CRC bits.
 
-        - A generic CRC remainder generator and checker can be found at [CRC Remainder Generator and Checker](/6.%20Generalised%20Components/Cyclic%20Redundancy%20Check/crc.c)
+        - A generic CRC remainder generator and checker can be found at [CRC Remainder Generator and Checker](/6.%20Generalised%20Components/CAN/Cyclic%20Redundancy%20Check/crc.c)
 
     - **Frame Format:** The CAN peripheral checks that fixed-format fields, such as the CRC delimiter, ACK delimiter, and EOF bits, contain the expected dominant or recessive values.
 
