@@ -14,13 +14,13 @@ and displays readings onto an SSD1309 OLED display
 - Sensor readings and the OLED display are updated once per second. 
 - MPR sensors are ZEROED at startup. Ensure they are under the intended zero pressure condition before powering/resetting the system. 
 
-## Using Arduino IDE instead of VS Code / PlatformIO 
-Before compiling, install 
-1. **ESP32 board package** by Espressif Systems through Boards Manager.
-2. **U8g2** through Library Manager. 
-3. **Adafruit MPRLS Library** through Library Manager and any required dependencies. 
+## Required libraries 
+This program uses the Arduino framework and requires the following libraries: 
+- **U8g2** - SSD1309 OLED display 
+- **Adafruit MPRLS** 
 
-Copy the code from `src/main.cpp` into Arduino and select the appropriate ESP32-S3 board and COM port. 
-Set the Serial Monitor baud rate to **115200**. 
-
+If using the Arduino IDE instead of VS Code / PlatformIO: 
+1. Copy the code from src/main.cpp 
+2. Select **ESP32-S3 Dev Module** and COM port. 
+3. Ensure Serial Monitor baud rate is set to 115200. 
 

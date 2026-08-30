@@ -20,3 +20,13 @@ The program checks that each device responds at its expected I2C address before 
 
 A correct functioning report should indicate all "PASS". 
 
+## Required libraries 
+This program uses the Arduino framework and requires the following libraries: 
+- **U8g2** - SSD1309 OLED display 
+
+If using the Arduino IDE instead of VS Code / PlatformIO: 
+1. Copy the code from src/main.cpp 
+2. Select **ESP32-S3 Dev Module** and COM port. 
+3. Ensure Serial Monitor baud rate is set to 115200. 
+
+
