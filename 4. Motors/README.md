@@ -39,9 +39,9 @@ The current software is configured for a **4-pole motor (2 pole pairs)** with a 
 | PB7 | TIM4_CH2 | Phase A PWM output |
 | PB6 | TIM4_CH1 | Phase B PWM output |
 | PB5 | TIM3_CH2 | Phase C PWM output |
-| PA1 | ADC2_IN2 | Hall A analog input |
-| PA6 | ADC2_IN3 | Hall B analog input |
-| PA7 | ADC2_IN4 | Hall C analog input |
+| PA4 | ADC2_IN2 | Hall A analog input |
+| PA3 | ADC2_IN3 | Hall B analog input |
+| PA5 | ADC2_IN4 | Hall C analog input |
 | PB3 | GPIO Output | Status / heartbeat LED |
 | PA9 | GPIO Output | General-purpose output, currently unused by motor control |
 | PA10 | GPIO Input | General-purpose input, currently unused by motor control |
@@ -85,9 +85,9 @@ ADC conversion order:
 
 | Rank | Pin | ADC Channel | Signal |
 | --- | --- | --- | --- |
-| 1 | PA1 | ADC2_IN2 | Hall A |
-| 2 | PA6 | ADC2_IN3 | Hall B |
-| 3 | PA7 | ADC2_IN4 | Hall C |
+| 1 | PA4 | ADC2_IN2 | Hall A |
+| 2 | PA3 | ADC2_IN3 | Hall B |
+| 3 | PA5 | ADC2_IN4 | Hall C |
 
 ADC2 DMA stores the three measurements continuously in `hall_adc[3]`.
 
