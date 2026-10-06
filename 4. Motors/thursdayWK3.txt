@@ -1,0 +1,7 @@
+// things that were changed
+// the hall sensors' adc lines were changed from 0, 1, 2 to 2, 1, 0
+// this was because the readings are then able to be swapped around
+// with this then the phase order could be changed from a, b, c to c, b, a
+// tihs was successful in changing the direction of the motor
+// we also saw that it was spinning at a faster speed than normal
+// recorded flow was max around 3L/min
