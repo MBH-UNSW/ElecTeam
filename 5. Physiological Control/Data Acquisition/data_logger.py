@@ -4,11 +4,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-
-# ============================================================
-# CONFIGURATION
-# ============================================================
-
+# CONFIG 
 # ESP32 address when connected to the "UBH-MCL" Wi-Fi network
 ESP32_URL = "http://192.168.4.1/api/data"
 
@@ -44,12 +40,9 @@ print()
 try:
 
     with open(CSV_FILE, "w", newline="") as file:
-
         writer = csv.writer(file)
 
-        # ----------------------------------------------------
-        # CSV COLUMN HEADINGS
-        # ----------------------------------------------------
+        # COLUMN HEADINGS 
 
         writer.writerow([
             "Computer Time",
@@ -59,18 +52,15 @@ try:
             "Right Flow (L/min)",
             "Left Preload (mmHg)",
             "Right Preload (mmHg)",
-            "Pressure 1 (mmHg)",
-            "Pressure 2 (mmHg)"
+            "Left Upstream Pressure (mmHg)",
+            "Right Upstream Pressure (mmHg)", 
+            "Pump RPM", 
+            "Motor Voltage (V)", 
+            "Motor Current (A)"
         ])
 
-        # ----------------------------------------------------
-        # DATA ACQUISITION LOOP
-        # ----------------------------------------------------
-
         while True:
-
             try:
-
                 # Request latest sensor data from ESP32
                 response = requests.get(
                     ESP32_URL,
@@ -82,10 +72,7 @@ try:
                 # Convert JSON into Python dictionary
                 data = response.json()
 
-
-                # ------------------------------------------------
-                # TIME INFORMATION
-                # ------------------------------------------------
+                # TIME INFORMATION 
 
                 computer_time = datetime.now().strftime(
                     "%Y-%m-%d %H:%M:%S.%f"
@@ -93,25 +80,22 @@ try:
 
                 uptime_seconds = data["uptime"] / 1000.0
 
+                # SENSOR VALUES 
 
-                # ------------------------------------------------
-                # SENSOR VALUES
-                # ------------------------------------------------
+                flow1 = get_value(data["left_flow_lpm"])
+                flow2 = get_value(data["right_flow_lpm"])
 
-                flow1 = get_value(data["flow1"])
-                flow2 = get_value(data["flow2"])
+                preload_left = get_value(data["left_inlet_pressure_mmHg"])
+                preload_right = get_value(data["right_inlet_pressure_mmHg"])
 
-                preload_left = get_value(data["preloadLeft"])
-                preload_right = get_value(data["preloadRight"])
+                left_upstream_pressure = get_value(data["left_upstream_pressure_mmHg"])
+                right_upstream_pressure = get_value(data["right_upstream_pressure_mmHg"])
 
-                pressure1 = get_value(data["mpr1"])
-                pressure2 = get_value(data["mpr2"])
+                pump_rpm = get_value(data["pump_rpm"])
+                pump_voltage = get_value(data["pump_voltage"])
+                pump_current = get_value(data["pump_current"])
 
-
-                # ------------------------------------------------
-                # WRITE TO CSV
-                # ------------------------------------------------
-
+                # WRITE TO CSV FILE 
                 writer.writerow([
                     computer_time,
                     data["packet"],
@@ -120,32 +104,35 @@ try:
                     flow2,
                     preload_left,
                     preload_right,
-                    pressure1,
-                    pressure2
+                    left_upstream_pressure,
+                    right_upstream_pressure, 
+                    pump_rpm, 
+                    pump_voltage, 
+                    pump_current 
                 ])
 
-                # Immediately save data to disk
+                # SAVE DATA TO DISK 
                 file.flush()
 
-
-                # ------------------------------------------------
-                # TERMINAL DISPLAY
-                # ------------------------------------------------
-
+                # PRINT TO TERMINAL
                 print(
                     f"Packet {data['packet']} | "
                     f"Time {uptime_seconds:.1f}s | "
                     f"Flow L: {flow1} | "
                     f"Flow R: {flow2} | "
                     f"Preload L: {preload_left} | "
-                    f"Preload R: {preload_right}"
+                    f"Preload R: {preload_right} | " 
+                    F"Upstream L: {left_upstream_pressure} | "
+                    F"Upstream R: {right_upstream_pressure} | "
+                    f"RPM: {pump_rpm} | "
+                    f"Voltage: {pump_voltage} | "
+                    f"Current: {pump_current}"
                 )
 
 
             except requests.RequestException as error:
 
                 print(f"ESP32 connection error: {error}")
-
 
             except (KeyError, ValueError) as error:
 
@@ -154,11 +141,7 @@ try:
 
             time.sleep(SAMPLE_INTERVAL)
 
-
-# ============================================================
-# STOP RECORDING
-# ============================================================
-
+# STOP RECORDING 
 except KeyboardInterrupt:
 
     print()
