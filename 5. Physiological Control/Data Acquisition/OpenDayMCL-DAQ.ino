@@ -5,6 +5,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <ESPmDNS.h>
+#include <driver/twai.h> 
 
 // ============================================================
 // CONFIGURATION
@@ -16,6 +17,11 @@
 #define MUX_ADDR 0x70
 #define MPR_ADDR 0x18
 #define PRELOAD_ADDR 0x28
+#define CAN_TX_PIN 42 
+#define CAN_RX_PIN 41
+#define CAN_ID_MOTOR 0x201 
+const uint32_t CAN_TIMEOUT_MS = 1000; 
+
 
 const uint8_t FLOW_PIN[2] = {4, 5};
 const uint8_t MPR_CH[2] = {0, 1};
@@ -58,6 +64,16 @@ uint32_t lastFlowPulse[2] = {0, 0};
 uint32_t packetId = 0;
 unsigned long previousTime = 0;
 
+struct MotorData { 
+  float voltage = NAN; 
+  float current = NAN; 
+  float rpm = NAN; 
+  bool connected = false; 
+  bool seen = false; 
+  uint32_t lastRx = 0; 
+}; 
+
+MotorData motor; 
 // ============================================================
 // WEB PAGE
 // ============================================================
@@ -155,18 +171,25 @@ canvas{width:100%;height:280px;margin-top:20px}
 const N=60;
 
 const info={
-  flow1:["Left Flow","L/min"],
-  flow2:["Right Flow","L/min"],
-  preloadLeft:["Left Preload","mmHg"],
-  preloadRight:["Right Preload","mmHg"],
-  mpr1:["Pressure 1","mmHg"],
-  mpr2:["Pressure 2","mmHg"]
+  left_flow_lpm:["Left Flow","L/min"],
+  right_flow_lpm:["Right Flow","L/min"],
+  left_inlet_pressure_mmHg:["Left Preload","mmHg"],
+  right_inlet_pressure_mmHg:["Right Preload","mmHg"],
+  left_upstream_pressure_mmHg:["Left Upstream Pressure","mmHg"],
+  right_upstream_pressure_mmHg:["Right Upstream Pressure","mmHg"],
+  pump_rpm:["Pump RPM","RPM"], 
+
+  pump_voltage:["Pump Voltage","V"],
+  pump_current:["Pump Current","A"]
 };
 
 const hist={
-  flow1:[],flow2:[],
-  preloadLeft:[],preloadRight:[],
-  mpr1:[],mpr2:[]
+  left_flow_lpm:[],right_flow_lpm:[],
+  left_inlet_pressure_mmHg:[],right_inlet_pressure_mmHg:[],
+  left_upstream_pressure_mmHg:[],right_upstream_pressure_mmHg:[],
+  pump_rpm:[], 
+  pump_voltage:[],
+  pump_current:[]
 };
 
 // Create sensor cards
@@ -270,16 +293,17 @@ function draw(id,series,unit){
 
 function redraw(){
   draw("flowChart",[
-    ["flow1","#b00014"],
-    ["flow2","#222"]
+    ["left_flow_lpm","#b00014"],
+    ["right_flow_lpm","#222"]
   ],"L/min");
 
   draw("pressureChart",[
-    ["preloadLeft","#b00014"],
-    ["preloadRight","#222"],
-    ["mpr1","#2878c8"],
-    ["mpr2","#239b56"]
+    ["left_inlet_pressure_mmHg","#b00014"],
+    ["right_inlet_pressure_mmHg","#222"],
+    ["left_upstream_pressure_mmHg","#2878c8"],
+    ["right_upstream_pressure_mmHg","#239b56"]
   ],"mmHg");
+
 }
 
 async function update(){
@@ -500,17 +524,21 @@ void addSensorJSON(String &json,const char* name,float value,bool connected){
 
 void handleTelemetry(){
   String json;
-  json.reserve(600);
+  json.reserve(900);
 
   json="{\"packet\":"+String(packetId)+",\"uptime\":"+String(millis())+",";
 
-  addSensorJSON(json,"flow1",flowRate[0],flowConnected[0]); json+=",";
-  addSensorJSON(json,"flow2",flowRate[1],flowConnected[1]); json+=",";
-  addSensorJSON(json,"preloadLeft",preload[0].value,preload[0].connected); json+=",";
-  addSensorJSON(json,"preloadRight",preload[1].value,preload[1].connected); json+=",";
-  addSensorJSON(json,"mpr1",pressure[0].value,pressure[0].connected); json+=",";
-  addSensorJSON(json,"mpr2",pressure[1].value,pressure[1].connected);
+  addSensorJSON(json,"left_flow_lpm",flowRate[0],flowConnected[0]); json+=",";
+  addSensorJSON(json,"right_flow_lpm",flowRate[1],flowConnected[1]); json+=",";
+  addSensorJSON(json,"left_inlet_pressure_mmHg",preload[0].value,preload[0].connected); json+=",";
+  addSensorJSON(json,"right_inlet_pressure_mmHg",preload[1].value,preload[1].connected); json+=",";
+  addSensorJSON(json,"left_upstream_pressure_mmHg",pressure[0].value,pressure[0].connected); json+=",";
+  addSensorJSON(json,"right_upstream_pressure_mmHg",pressure[1].value,pressure[1].connected); json+=","; 
+  addSensorJSON(json, "pump_rpm", motor.rpm, motor.connected); json+=","; 
+  addSensorJSON(json, "pump_voltage", motor.voltage, motor.connected); json+=",";
+  addSensorJSON(json, "pump_current", motor.current, motor.connected);
   json+="}";
+
 
   server.sendHeader("Cache-Control","no-store");
   server.send(200,"application/json",json);
@@ -607,6 +635,38 @@ void showIPAddress(){
   oled.sendBuffer();
 }
 
+void initCAN() { 
+  twai_general_config_t g = TWAI_GENERAL_CONFIG_DEFAULT((gpio_num_t)CAN_TX_PIN, (gpio_num_t)CAN_RX_PIN, TWAI_MODE_NORMAL);
+  g.rx_queue_len = 64; 
+
+  twai_timing_config_t t = TWAI_TIMING_CONFIG_500KBITS();
+  twai_filter_config_t f = TWAI_FILTER_CONFIG_ACCEPT_ALL();
+
+  bool ok = twai_driver_install(&g, &t, &f) == ESP_OK && twai_start() == ESP_OK;
+  Serial.printf("CAN bus initialisation: %s\n", ok ? "OK" : "FAILED");
+}
+
+void readCAN() { 
+  twai_message_t m; 
+
+  while(twai_receive(&m , 0) == ESP_OK) { 
+    if (m.extd || m.rtr) continue; 
+
+    if (m.identifier == CAN_ID_MOTOR && m.data_length_code == 6) {
+      uint16_t v = (uint16_t) (m.data[0] | (m.data[1] << 8));
+      int16_t c = (int16_t) (m.data[2] | (m.data[3] << 8));
+      uint16_t r = (uint16_t) (m.data[4] | (m.data[5] << 8));
+
+      motor.voltage = v / 100.0f; 
+      motor.current = c / 100.0f;
+      motor.rpm = r; 
+      motor.seen = true; 
+      motor.lastRx = millis(); 
+    }
+  }
+
+  motor.connected = motor.seen && (millis() - motor.lastRx < CAN_TIMEOUT_MS);
+}
 // ============================================================
 // SETUP
 // ============================================================
@@ -635,6 +695,7 @@ void setup(){
   attachInterrupt(digitalPinToInterrupt(FLOW_PIN[1]),flow2ISR,RISING);
 
   initMPR();
+  initCAN(); 
   startNetwork();
   startWebServer();
   showIPAddress();
@@ -649,6 +710,7 @@ void setup(){
 
 void loop(){
   server.handleClient();
+  readCAN(); 
 
   uint32_t now=millis();
   if(now-previousTime<1000) return;
